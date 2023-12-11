@@ -1,0 +1,35 @@
+POST "http://localhost:8080/products" HTTP/1.1
+Content-Type: "application/json"
+
+{
+	"name": "Rafael",
+	"price":100
+}
+
+
+###
+
+GET "http://localhost:8080/products/623676cf-e71d-4c43-9e82-2b9dd389f696" HTTP/1.1
+Content-Type: "application/json"
+
+###
+
+PUT "http://localhost:8080/products/623676cf-e71d-4c43-9e82-2b9dd389f696" HTTP/1.1
+Content-Type: "application/json"
+
+{
+	"name": "Rafael",
+	"price":100
+}
+
+###
+
+DELETE "http://localhost:8080/products/623676cf-e71d-4c43-9e82-2b9dd389f696" HTTP/1.1
+Content-Type: "application/json"
+
+
+###
+
+GET "http://localhost:8080/products HTTP/1.1
+Content-Type: "application/json"
+Authorization: Bearer rsrs
