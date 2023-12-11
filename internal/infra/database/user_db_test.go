@@ -5,25 +5,7 @@ import (
 
 	"github.com/rafaelsouzaribeiro/9-API/internal/entity"
 	"github.com/stretchr/testify/assert"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 )
-
-func setupTestDatabase(entity interface{}) (*gorm.DB, error) {
-	db, err := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
-
-	if err != nil {
-		return nil, err
-	}
-
-	err = db.AutoMigrate(entity)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return db, nil
-}
 
 func TestUserCreate(t *testing.T) {
 	dataRef := &entity.User{}
