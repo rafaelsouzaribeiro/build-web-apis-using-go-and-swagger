@@ -11,14 +11,27 @@ import (
 	"gorm.io/gorm"
 )
 
-func TestCreateNewProduct(t *testing.T) {
+func setupTestDatabaseProduct() (*gorm.DB, error) {
 	db, err := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+	if err != nil {
+		return nil, err
+	}
+
+	err = db.AutoMigrate(&entity.Product{})
+	if err != nil {
+		return nil, err
+	}
+
+	return db, nil
+}
+
+func TestCreateNewProduct(t *testing.T) {
+	db, err := setupTestDatabaseProduct()
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	db.AutoMigrate(&entity.Product{})
 	product, err := entity.NewProduct("Product 1", 10.0)
 	assert.NoError(t, err)
 	products := NewProduct(db)
@@ -28,13 +41,12 @@ func TestCreateNewProduct(t *testing.T) {
 }
 
 func TestFindAllProduct(t *testing.T) {
-	db, err := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+	db, err := setupTestDatabaseProduct()
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	db.AutoMigrate(&entity.Product{})
 	for i := 1; i < 24; i++ {
 		// fmt.Sprintf("Product %d",i)
 		// Product 1... até 24
@@ -65,13 +77,12 @@ func TestFindAllProduct(t *testing.T) {
 }
 
 func TestFindById(t *testing.T) {
-	db, err := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+	db, err := setupTestDatabaseProduct()
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	db.AutoMigrate(&entity.Product{})
 	product, err := entity.NewProduct("Product 1", 10.0)
 	assert.NoError(t, err)
 	db.Create(product)
@@ -83,13 +94,12 @@ func TestFindById(t *testing.T) {
 }
 
 func TestUpdateProduct(t *testing.T) {
-	db, err := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+	db, err := setupTestDatabaseProduct()
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	db.AutoMigrate(&entity.Product{})
 	product, err := entity.NewProduct("Product 1", 10.0)
 	assert.NoError(t, err)
 	db.Create(product)
@@ -103,13 +113,12 @@ func TestUpdateProduct(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	db, err := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+	db, err := setupTestDatabaseProduct()
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	db.AutoMigrate(&entity.Product{})
 	product, err := entity.NewProduct("Product 1", 10.0)
 	assert.NoError(t, err)
 	db.Create(product)
