@@ -9,14 +9,14 @@ import (
 	"gorm.io/gorm"
 )
 
-func setupTestDatabaseUser() (*gorm.DB, error) {
+func setupTestDatabase(entity interface{}) (*gorm.DB, error) {
 	db, err := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
 
 	if err != nil {
 		return nil, err
 	}
 
-	err = db.AutoMigrate(&entity.User{})
+	err = db.AutoMigrate(entity)
 
 	if err != nil {
 		return nil, err
@@ -26,7 +26,9 @@ func setupTestDatabaseUser() (*gorm.DB, error) {
 }
 
 func TestUserCreate(t *testing.T) {
-	db, err := setupTestDatabaseUser()
+	dataRef := &entity.User{}
+
+	db, err := setupTestDatabase(dataRef)
 
 	if err != nil {
 		t.Error(err)
@@ -48,7 +50,9 @@ func TestUserCreate(t *testing.T) {
 }
 
 func TestFindByEmail(t *testing.T) {
-	db, err := setupTestDatabaseUser()
+	dataRef := &entity.User{}
+
+	db, err := setupTestDatabase(dataRef)
 
 	if err != nil {
 		t.Error(err)

@@ -7,26 +7,12 @@ import (
 
 	"github.com/rafaelsouzaribeiro/9-API/internal/entity"
 	"github.com/stretchr/testify/assert"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 )
 
-func setupTestDatabaseProduct() (*gorm.DB, error) {
-	db, err := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
-	if err != nil {
-		return nil, err
-	}
-
-	err = db.AutoMigrate(&entity.Product{})
-	if err != nil {
-		return nil, err
-	}
-
-	return db, nil
-}
-
 func TestCreateNewProduct(t *testing.T) {
-	db, err := setupTestDatabaseProduct()
+	dataRef := &entity.Product{}
+
+	db, err := setupTestDatabase(dataRef)
 
 	if err != nil {
 		t.Error(err)
@@ -41,7 +27,9 @@ func TestCreateNewProduct(t *testing.T) {
 }
 
 func TestFindAllProduct(t *testing.T) {
-	db, err := setupTestDatabaseProduct()
+	dataRef := &entity.Product{}
+
+	db, err := setupTestDatabase(dataRef)
 
 	if err != nil {
 		t.Error(err)
@@ -77,7 +65,9 @@ func TestFindAllProduct(t *testing.T) {
 }
 
 func TestFindById(t *testing.T) {
-	db, err := setupTestDatabaseProduct()
+	dataRef := &entity.Product{}
+
+	db, err := setupTestDatabase(dataRef)
 
 	if err != nil {
 		t.Error(err)
@@ -94,7 +84,9 @@ func TestFindById(t *testing.T) {
 }
 
 func TestUpdateProduct(t *testing.T) {
-	db, err := setupTestDatabaseProduct()
+	dataRef := &entity.Product{}
+
+	db, err := setupTestDatabase(dataRef)
 
 	if err != nil {
 		t.Error(err)
@@ -113,7 +105,9 @@ func TestUpdateProduct(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	db, err := setupTestDatabaseProduct()
+	dataRef := &entity.Product{}
+
+	db, err := setupTestDatabase(dataRef)
 
 	if err != nil {
 		t.Error(err)
